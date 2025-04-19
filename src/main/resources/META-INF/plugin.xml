@@ -29,5 +29,14 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
+        <!--suppress PluginXmlCapitalization -->
+        <projectConfigurable parentId="settings.typescriptcompiler" id="settings.idealingua" nonDefaultProject="true"
+                bundle="messages.IdeaLinguaBundle" key="idealingua.configurable.service.title"
+                instance="io.github.vinccool96.lingua.idealingua.options.IdeaLinguaSettingsManager"/>
+
+        <psi.referenceContributor language="Angular2Html"
+                implementation="io.github.vinccool96.lingua.idealingua.reference.IdeaLinguaHtmlReferenceContributor"/>
+        <psi.referenceContributor language="TypeScript"
+                implementation="io.github.vinccool96.lingua.idealingua.reference.IdeaLinguaTsReferenceContributor"/>
     </extensions>
 </idea-plugin>
