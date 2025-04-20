@@ -5,7 +5,7 @@ import com.intellij.openapi.project.Project
 import io.github.vinccool96.lingua.idealingua.IdeaLinguaBundle
 import javax.swing.JComponent
 
-class IdeaLinguaSettingsManager(project: Project) : SearchableConfigurable {
+class IdeaLinguaSettingsManager(private val project: Project) : SearchableConfigurable {
 
     private val settings = IdeaLinguaSettings.getInstance(project)
 
@@ -13,7 +13,7 @@ class IdeaLinguaSettingsManager(project: Project) : SearchableConfigurable {
 
     override fun createComponent(): JComponent {
         if (settingsPane == null) {
-            settingsPane = IdeaLinguaSettingsPane()
+            settingsPane = IdeaLinguaSettingsPane(settings)
         }
 
         return settingsPane!!.root
