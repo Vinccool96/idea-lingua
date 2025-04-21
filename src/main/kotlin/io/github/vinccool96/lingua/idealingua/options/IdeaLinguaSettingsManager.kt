@@ -15,7 +15,7 @@ class IdeaLinguaSettingsManager(private val project: Project) : SearchableConfig
 
     override fun createComponent(): JComponent {
         if (settingsPane == null) {
-            settingsPane = IdeaLinguaSettingsPane(settings)
+            settingsPane = IdeaLinguaSettingsPane(settings, project)
         }
 
         return settingsPane!!.root
@@ -50,6 +50,14 @@ class IdeaLinguaSettingsManager(private val project: Project) : SearchableConfig
             descriptor.title = IdeaLinguaBundle.message("idealingua.configurable.descriptor.main.folder.title")
             descriptor.description =
                     IdeaLinguaBundle.message("idealingua.configurable.descriptor.main.folder.description")
+            return descriptor
+        }
+
+        fun createOtherFoldersDescriptor(): FileChooserDescriptor {
+            val descriptor = FileChooserDescriptorFactory.createMultipleFoldersDescriptor()
+            descriptor.title = IdeaLinguaBundle.message("idealingua.configurable.descriptor.other.folders.title")
+            descriptor.description =
+                    IdeaLinguaBundle.message("idealingua.configurable.descriptor.other.folders.description")
             return descriptor
         }
 

@@ -1,16 +1,20 @@
 package io.github.vinccool96.lingua.idealingua.options
 
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.ui.dsl.builder.COLUMNS_LARGE
+import com.intellij.ui.dsl.builder.Placeholder
 import com.intellij.ui.dsl.builder.columns
 import com.intellij.ui.dsl.builder.panel
 import io.github.vinccool96.lingua.idealingua.IdeaLinguaBundle
 
 @Suppress("UnstableApiUsage")
-class IdeaLinguaSettingsPane(private val settings: IdeaLinguaSettings) {
+class IdeaLinguaSettingsPane(private val settings: IdeaLinguaSettings, project: Project) {
 
     private lateinit var mainFolder: TextFieldWithBrowseButton
+
+    private lateinit var otherFoldersPanel: Placeholder
 
     val root = panel {
         row(IdeaLinguaBundle.message("idealingua.configurable.settings.main.folder")) {
@@ -18,8 +22,12 @@ class IdeaLinguaSettingsPane(private val settings: IdeaLinguaSettings) {
                     .columns(COLUMNS_LARGE).component
         }
         row(IdeaLinguaBundle.message("idealingua.configurable.settings.other.folders")) {
-            OtherFoldersPanel()
+            otherFoldersPanel = placeholder()
         }
+    }
+
+    init {
+        otherFoldersPanel.component = OtherFoldersPanel(settings, project)
     }
 
     fun reset() {
