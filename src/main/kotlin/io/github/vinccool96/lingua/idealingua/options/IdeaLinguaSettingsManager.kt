@@ -1,5 +1,7 @@
 package io.github.vinccool96.lingua.idealingua.options
 
+import com.intellij.openapi.fileChooser.FileChooserDescriptor
+import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory
 import com.intellij.openapi.options.SearchableConfigurable
 import com.intellij.openapi.project.Project
 import io.github.vinccool96.lingua.idealingua.IdeaLinguaBundle
@@ -24,7 +26,11 @@ class IdeaLinguaSettingsManager(private val project: Project) : SearchableConfig
     }
 
     override fun apply() {
-        // TODO("Not yet implemented")
+        settingsPane?.apply()
+    }
+
+    override fun reset() {
+        settingsPane?.reset()
     }
 
     @Suppress("DialogTitleCapitalization")
@@ -34,6 +40,19 @@ class IdeaLinguaSettingsManager(private val project: Project) : SearchableConfig
 
     override fun getId(): String {
         return "settings.idealingua"
+    }
+
+    @Suppress("CompanionObjectInExtension")
+    companion object {
+
+        fun createBaseFolderDescriptor(): FileChooserDescriptor {
+            val descriptor = FileChooserDescriptorFactory.singleDir()
+            descriptor.title = IdeaLinguaBundle.message("idealingua.configurable.descriptor.main.folder.title")
+            descriptor.description =
+                    IdeaLinguaBundle.message("idealingua.configurable.descriptor.main.folder.description")
+            return descriptor
+        }
+
     }
 
 }
