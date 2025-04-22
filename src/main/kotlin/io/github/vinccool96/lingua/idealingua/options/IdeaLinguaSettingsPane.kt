@@ -3,39 +3,46 @@ package io.github.vinccool96.lingua.idealingua.options
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.openapi.util.io.FileUtil
-import com.intellij.ui.dsl.builder.COLUMNS_LARGE
-import com.intellij.ui.dsl.builder.Placeholder
-import com.intellij.ui.dsl.builder.columns
-import com.intellij.ui.dsl.builder.panel
+import com.intellij.ui.IdeBorderFactory
+import com.intellij.util.ui.JBUI
 import io.github.vinccool96.lingua.idealingua.IdeaLinguaBundle
+import java.awt.BorderLayout
+import javax.swing.JPanel
 
-@Suppress("UnstableApiUsage")
 class IdeaLinguaSettingsPane(private val settings: IdeaLinguaSettings, project: Project) {
 
-    private lateinit var mainFolder: TextFieldWithBrowseButton
+    lateinit var root: JPanel
 
-    private lateinit var otherFoldersPanel: Placeholder
+    lateinit var myMainFolder: TextFieldWithBrowseButton
 
-    val root = panel {
-        row(IdeaLinguaBundle.message("idealingua.configurable.settings.main.folder")) {
-            mainFolder = textFieldWithBrowseButton(IdeaLinguaSettingsManager.createBaseFolderDescriptor())
-                    .columns(COLUMNS_LARGE).component
-        }
-        row(IdeaLinguaBundle.message("idealingua.configurable.settings.other.folders")) {
-            otherFoldersPanel = placeholder()
-        }
-    }
+    lateinit var myPanelForOtherFolders: JPanel
+
+    private val myOtherFoldersPanel = OtherFoldersPanel(settings, project)
 
     init {
-        otherFoldersPanel.component = OtherFoldersPanel(settings, project)
+        myMainFolder.addBrowseFolderListener(project, IdeaLinguaSettingsManager.createBaseFolderDescriptor())
+
+        myPanelForOtherFolders.border = IdeBorderFactory.createTitledBorder(
+                IdeaLinguaBundle.message("idealingua.configurable.settings.other.folders"), false, JBUI.insetsTop(0))
+                .setShowLine(false)
+        myPanelForOtherFolders.layout = BorderLayout()
+        myPanelForOtherFolders.add(myOtherFoldersPanel, BorderLayout.CENTER)
     }
 
+    val isModified: Boolean
+        get() {
+            return FileUtil.toSystemIndependentName(myMainFolder.text.trim()) != settings.translationsPath ||
+                    myOtherFoldersPanel.isModified
+        }
+
     fun reset() {
-        mainFolder.text = FileUtil.toSystemDependentName(settings.translationsPath)
+        myMainFolder.text = FileUtil.toSystemDependentName(settings.translationsPath)
+        myOtherFoldersPanel.reset()
     }
 
     fun apply() {
-        settings.translationsPath = FileUtil.toSystemIndependentName(mainFolder.text.trim())
+        settings.translationsPath = FileUtil.toSystemIndependentName(myMainFolder.text.trim())
+        myOtherFoldersPanel.apply()
     }
 
 }

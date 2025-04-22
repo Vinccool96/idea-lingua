@@ -22,7 +22,7 @@ class IdeaLinguaSettingsManager(private val project: Project) : SearchableConfig
     }
 
     override fun isModified(): Boolean {
-        return settingsPane == null
+        return settingsPane?.isModified ?: true
     }
 
     override fun apply() {

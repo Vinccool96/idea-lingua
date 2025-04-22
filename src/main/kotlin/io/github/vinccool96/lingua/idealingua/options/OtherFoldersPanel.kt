@@ -3,6 +3,7 @@ package io.github.vinccool96.lingua.idealingua.options
 import com.intellij.openapi.fileChooser.FileChooser
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
+import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.SimpleColoredComponent
 import com.intellij.ui.SimpleTextAttributes
@@ -62,6 +63,16 @@ class OtherFoldersPanel(private val mySettings: IdeaLinguaSettings, private val 
         val descriptor = IdeaLinguaSettingsManager.createOtherFoldersDescriptor()
         val directory = myProject.guessProjectDir()
         FileChooser.chooseFiles(descriptor, myProject, parent, directory, consumer)
+    }
+
+    fun reset() {
+        myOtherFoldersTableView.listTableModel.items =
+                ArrayList(mySettings.otherTranslationsPaths.map { FileUtil.toSystemDependentName(it) })
+    }
+
+    fun apply() {
+        mySettings.otherTranslationsPaths =
+                ArrayList(myOtherFoldersTableView.items.map { FileUtil.toSystemIndependentName(it) })
     }
 
     private class OtherFoldersTableView(otherFolders: List<String>) : TableView<String>() {
