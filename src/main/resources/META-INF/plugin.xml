@@ -38,5 +38,10 @@
                 implementation="io.github.vinccool96.lingua.idealingua.reference.IdeaLinguaHtmlReferenceContributor"/>
         <psi.referenceContributor language="TypeScript"
                 implementation="io.github.vinccool96.lingua.idealingua.reference.IdeaLinguaTsReferenceContributor"/>
+
+        <completion.contributor language="Angular2Html"
+                implementationClass="io.github.vinccool96.lingua.idealingua.completion.IdeaLinguaHtmlCompletionContributor"/>
+        <completion.contributor language="Angular2Html"
+                implementationClass="io.github.vinccool96.lingua.idealingua.completion.IdeaLinguaTsCompletionContributor"/>
     </extensions>
 </idea-plugin>
