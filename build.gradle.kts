@@ -38,7 +38,7 @@ val properties = Properties().apply {
 
 intellijPlatform {
     pluginConfiguration {
-        name = "Idea Lingua"
+        name = "IdeaLingua"
 
         ideaVersion {
             sinceBuild = "251"
