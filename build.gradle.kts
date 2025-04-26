@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.*
 
 plugins {
     id("java")
@@ -21,10 +22,18 @@ repositories {
 dependencies {
     intellijPlatform {
         create("WS", "2025.1")
+
+        pluginVerifier()
+        zipSigner()
+
         testFramework(org.jetbrains.intellij.platform.gradle.TestFrameworkType.Platform)
 
         bundledPlugins("com.intellij.modules.json", "JavaScript", "AngularJS")
     }
+}
+
+val properties = Properties().apply {
+    load(rootProject.file("local.properties").reader())
 }
 
 intellijPlatform {
@@ -38,6 +47,22 @@ intellijPlatform {
         changeNotes = """
       Initial version
     """.trimIndent()
+    }
+
+    signing {
+        certificateChainFile = rootProject.file(properties.getProperty("intellijPlatformCertificateChainPath"))
+        privateKeyFile = rootProject.file(properties.getProperty("intellijPlatformPrivateKeyPath"))
+        password = properties.getProperty("intellijPlatformPassword")
+    }
+
+    publishing {
+        token = properties.getProperty("intellijPlatformPublishingToken")
+    }
+
+    pluginVerification {
+        ides {
+            recommended()
+        }
     }
 }
 

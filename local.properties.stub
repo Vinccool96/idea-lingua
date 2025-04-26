@@ -1,0 +1,4 @@
+intellijPlatformPublishingToken=perm-string
+intellijPlatformCertificateChainPath=/path/to/chain.crt
+intellijPlatformPrivateKeyPath=/path/to/private.pem
+intellijPlatformPassword=password
